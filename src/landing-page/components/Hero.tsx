@@ -86,13 +86,13 @@ export default function Hero() {
             </div>
           </div>
           <div className="mt-14 flow-root sm:mt-14 ">
-            <div className="-m-2 rounded-xl  lg:-m-4 lg:rounded-2xl lg:p-4">
+            <div className="flex justify-center -m-2 rounded-xl lg:-m-4 lg:rounded-2xl lg:p-4">
               <img
-                src={openSaasBanner}
-                alt="App screenshot"
-                width={2432}
-                height={1442}
-                className="rounded-md shadow-2xl ring-1 ring-gray-900/10"
+              src={openSaasBanner}
+              alt="App screenshot"
+              width={2432}
+              height={1442}
+              className="rounded-md shadow-2xl ring-1 ring-gray-900/10"
               />
             </div>
           </div>
