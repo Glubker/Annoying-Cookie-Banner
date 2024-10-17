@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 
 // Helper function to shuffle an array
+// @ts-ignore
 const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
 };
 
+// @ts-ignore
 export default function BigBangTheoryQuiz({ completeCaptcha }) {
     // List of trivia questions with multiple-choice answers
     const questions = [
@@ -186,7 +188,7 @@ export default function BigBangTheoryQuiz({ completeCaptcha }) {
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 @keyframes moveUp {
                     from {
                         transform: translateY(100%);

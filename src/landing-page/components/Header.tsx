@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { HiBars3 } from 'react-icons/hi2';
 import { BiLogIn } from 'react-icons/bi';
-import { AiFillCloseCircle } from 'react-icons/ai';
 
 
 import logo from '../../assets/logo.png';
@@ -13,7 +12,7 @@ interface NavigationItem {
 };
 
 export default function Header({ navigation }: { navigation: NavigationItem[] }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [, setMobileMenuOpen] = useState(false);
 
 
   const NavLogo = () => <img className='h-8 w-8' src={logo} alt='Your SaaS App' />;

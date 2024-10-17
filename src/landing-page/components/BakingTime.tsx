@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
+import PongGame from './PongGame';
+import cookieImg from '../../assets/cookie.png'; // Adjust to your path
 
+// @ts-ignore
 export default function BakingTime({ completeCaptcha }) {
     const [timeLeft, setTimeLeft] = useState(30);
+    const [gameStartCountdown, setGameStartCountdown] = useState(5);
     const [loadingProgress, setLoadingProgress] = useState(0);
     const [step, setStep] = useState(0); // 0 = Loading, 1 = Fake Recipe, 2 = Crispy/Chewy, 3 = Baking Timer, 4 = Final Message
     const [messages, setMessages] = useState('');
+    const [isPongOpen, setPongOpen] = useState(false); // Maze modal state
+    const [isPongClosing, setIsPongClosing] = useState(false); // Animation state for closing the modal
+
+    const [isCookieClicked, setIsCookieClicked] = useState(false);
+    const [_, setCookiesEaten] = useState(0);
 
     // Loading bar progress and quirky messages
     useEffect(() => {
@@ -47,6 +56,16 @@ export default function BakingTime({ completeCaptcha }) {
         }
     }, [timeLeft, step]);
 
+
+    useEffect(() => {
+        if (step === 5 && gameStartCountdown > 0) {
+            const timer = setTimeout(() => setGameStartCountdown(gameStartCountdown - 1), 1000);
+            return () => clearTimeout(timer);
+        } else if (step === 5 && gameStartCountdown === 0) {
+            setPongOpen(true); // Open maze modal
+        }
+    }, [gameStartCountdown, step]);
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
             <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 animate-fade-in relative">
@@ -55,8 +74,8 @@ export default function BakingTime({ completeCaptcha }) {
                 {/* Loading Analysis Step */}
                 {step === 0 && (
                     <div className="text-center mb-6">
-                        <h3 className="font-bold text-gray-900 dark:text-white text-3xl animate-slide-up">
-                            Analyzing your cookie preferences... 🍪
+                        <h3 className="font-bold text-gray-900 dark:text-white text-3xl animate-fade-in">
+                            Great choice! Analyzing your cookie preferences... 🍪
                         </h3>
                         <p className="text-lg text-gray-500 dark:text-gray-400 mt-2 animate-fade-text">{messages}</p>
                         <div className="relative mt-6">
@@ -101,18 +120,19 @@ export default function BakingTime({ completeCaptcha }) {
                         <div className="flex justify-center gap-4 mt-6">
                             <button
                                 onClick={() => setStep(3)}
-                                className="py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg transition-transform transform hover:scale-105"
+                                className="py-3 px-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full shadow-lg hover:from-blue-600 hover:to-blue-700 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
                             >
-                                Cripsy
+                                Crispy
                             </button>
                             <button
                                 onClick={() => setStep(3)}
-                                className="py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg transition-transform transform hover:scale-105"
+                                className="py-3 px-6 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full shadow-lg hover:from-pink-600 hover:to-pink-700 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
                             >
                                 Chewy
                             </button>
                         </div>
                     </div>
+                
                 )}
 
                 {/* Baking Timer Step */}
@@ -127,27 +147,121 @@ export default function BakingTime({ completeCaptcha }) {
                     </div>
                 )}
 
-                {/* Final Message Step */}
+                {/* Game Difficulty Step */}
                 {step === 4 && (
-                    <div className="text-center mb-6 animate-final-reveal">
+                    <div className="text-center mb-6">
                         <h3 className="font-bold text-gray-900 dark:text-white text-3xl">
-                            Your internet cookies are ready! 🍪
+                            Your internet cookies finished baking, but they are burning hot! 🔥
                         </h3>
                         <p className="text-lg text-gray-500 dark:text-gray-400 mt-2">
-                            Time to enjoy the perfect browsing experience… made just for you.
+                            Let's play a quick game while we wait for them to cool down. Please choose a difficulty!
                         </p>
-                        <button
-                            onClick={completeCaptcha}
-                            className="py-2 px-4 mt-6 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-lg transition-transform transform hover:scale-105"
-                        >
-                            Start Browsing
-                        </button>
+                        <div className="flex justify-center gap-4 mt-6">
+                            <button
+                                onClick={() => {
+                                    setStep(5);
+                                }}
+                                className="py-3 px-6 bg-gray-100 border border-gray-400 text-black rounded-full shadow-lg hover:bg-orange-300 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                            >
+                                Easy
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    setPongOpen(true); // Open maze modal
+                                }}
+                                className="py-3 px-6 bg-gray-100 border border-gray-400 text-black rounded-full shadow-lg hover:bg-orange-300 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                            >
+                                Medium
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    setPongOpen(true); // Open maze modal
+                                }}
+                                className="py-3 px-6 bg-gray-100 border border-gray-400 text-black rounded-full shadow-lg hover:bg-orange-300 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                            >
+                                Hard
+                            </button>
+                        </div>
                     </div>
                 )}
+
+                
+                {/* Easy is for noobs */}
+                {step === 5 && (
+                    <div className="text-center mb-6 animate-final-reveal">
+                        <h3 className="font-bold text-gray-900 dark:text-white text-3xl">
+                            Easy is for noobs! How about... <span className='text-purple-700'>IMPOSSIBLE?</span> 😈
+                        </h3>
+                        <p className="text-lg text-gray-500 dark:text-gray-400 mt-2 mb-5">
+                            The game is about to start. Are you ready?
+                        </p>
+
+                        <span className='text-4xl font-bold'>{gameStartCountdown}</span>
+                    </div>
+                )}
+
+
+                {/* Pong Game Step */}
+                {isPongOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center">
+                        <div className={`bg-gray-800 rounded-2xl shadow-2xl w-[70vw] h-[70vh] relative flex flex-col justify-center items-center p-4 ${isPongClosing ? 'animate-fade-out' : 'animate-fade-in'}`}>
+                            {/* Pong Game */}
+                            <div className="w-full h-full flex justify-center items-center">
+                                <PongGame completeCaptcha={() => {
+                                    setIsPongClosing(true); // Start closing animation
+                                    setStep(6); // Move to the next step
+                                    setTimeout(() => {
+                                        setPongOpen(false); // Close the modal after the animation completes
+                                    }, 400); // Match this duration to the CSS animation
+                                }}/>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
+                {step === 6 && (
+                    <>
+                        <div className="border-b border-gray-200 dark:border-neutral-800 pb-5">
+                            <h3 className="text-xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight leading-tight">
+                                Awh, you took way too long, now they are all cold! 🍪
+                            </h3>
+                            <p>No worries, you can still have a few. 😉</p>
+                        </div>
+                        <div className="flex flex-col items-center gap-6 border-t border-gray-200 dark:border-neutral-800">
+                            {/* Cookie Image */}
+                            <div
+                                className={`relative group transition-all transform-gpu duration-300 ease-in-out cursor-pointer ${isCookieClicked ? 'scale-95' : 'hover:scale-105'}`}
+                                onClick={() => {
+                                    setIsCookieClicked(true);
+                                    setTimeout(() => setIsCookieClicked(false), 200); // Short animation reset
+
+                                    setCookiesEaten(prev => {
+                                        const newCount = prev + 1;
+                                        if (newCount >= 3) {
+                                            completeCaptcha(); // Complete captcha
+                                        }
+                                        return newCount;
+                                    });
+                                }}
+                                >
+                                <img
+                                    src={cookieImg}
+                                    className="w-60 h-60 rounded-full transition-all duration-500 group-hover:rotate-12"
+                                    alt="Cookie"
+                                />
+                            </div>
+                        </div>
+                    </>
+                )}
+
+
             </div>
 
             {/* Animations and Styles */}
-            <style jsx>{`
+            <style>{`
                 .progress-container {
                     animation: progress-bar-animation 15s ease-in-out;
                 }
@@ -166,24 +280,6 @@ export default function BakingTime({ completeCaptcha }) {
                     background-size: cover;
                     opacity: 0.1;
                     z-index: -1;
-                }
-
-                .animate-fade-in {
-                    animation: fadeIn 0.7s ease-in-out;
-                }
-
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-
-                .animate-slide-up {
-                    animation: slideUp 0.5s ease-in-out;
-                }
-
-                @keyframes slideUp {
-                    from { transform: translateY(20px); opacity: 0; }
-                    to { transform: translateY(0); opacity: 1; }
                 }
 
                 .animate-fade-text {

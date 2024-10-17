@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// @ts-ignore
 export default function Captcha({ completeCaptcha }) {
     // Generate random math expression
     function generateRandomMathExpression() {
@@ -14,8 +15,10 @@ export default function Captcha({ completeCaptcha }) {
     }
 
     // Function to calculate the result of the expression
+    // @ts-ignore
     function getAnswer(expression) {
         try {
+            // @ts-ignore
             return parseFloat(Math.round((eval(expression) + Number.EPSILON) * 1e7) / 1e7); // Evaluate and round to 7 decimal places
         } catch (error) {
             console.error("Invalid expression", error);
@@ -46,6 +49,7 @@ export default function Captcha({ completeCaptcha }) {
     }, [timer]);
 
     // Normalize the user's input (replace commas with periods)
+    // @ts-ignore
     const normalizeInput = (input) => {
         return input.replace(',', '.'); // Replace any commas with periods
     };
@@ -55,6 +59,7 @@ export default function Captcha({ completeCaptcha }) {
         const normalizedInput = normalizeInput(userInput); // Normalize input
         const correctAnswer = getAnswer(mathExpression);
         
+        // @ts-ignore
         if (parseFloat(normalizedInput) === Math.round((correctAnswer + Number.EPSILON) * 1e7) / 1e7) {
             completeCaptcha(); // Call the parent function to complete the captcha
         } else {
@@ -66,6 +71,7 @@ export default function Captcha({ completeCaptcha }) {
         }
     };
 
+    // @ts-ignore
     const handleKeyPress = (event) => {
         // Submit when Enter is pressed
         if (event.keyCode === 13 || event.which === 13) {
@@ -81,7 +87,6 @@ export default function Captcha({ completeCaptcha }) {
                         <h3 className="font-bold text-gray-800 dark:text-white text-xl md:text-2xl">
                             Prove You're Not a Human! ⏳
                         </h3>
-                        <p className="text-red-500 nd:text-1xl">No Calculators Allowed!</p>
                     </div>
                 </div>
 
@@ -123,7 +128,7 @@ export default function Captcha({ completeCaptcha }) {
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 @keyframes moveUp {
                     from {
                         transform: translateY(100%);
