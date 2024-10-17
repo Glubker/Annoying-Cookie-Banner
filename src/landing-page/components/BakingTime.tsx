@@ -69,8 +69,6 @@ export default function BakingTime({ completeCaptcha }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
             <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 animate-fade-in relative">
-                <div className="baking-background"></div> {/* Add some background animations */}
-                
                 {/* Loading Analysis Step */}
                 {step === 0 && (
                     <div className="text-center mb-6">
@@ -268,18 +266,6 @@ export default function BakingTime({ completeCaptcha }) {
 
                 .progress-bar {
                     transition: width 1s ease-in-out;
-                }
-
-                .baking-background {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    bottom: 0;
-                    left: 0;
-                    background-image: url('/images/baking-background.svg'); /* Add playful baking image */
-                    background-size: cover;
-                    opacity: 0.1;
-                    z-index: -1;
                 }
 
                 .animate-fade-text {

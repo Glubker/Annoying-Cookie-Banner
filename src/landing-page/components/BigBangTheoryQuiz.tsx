@@ -195,7 +195,7 @@ export default function BigBangTheoryQuiz({ completeCaptcha }) {
                         opacity: 0;
                     }
                     to {
-                        transform: translateY(0);
+                        transform: translateY(0);x<
                         opacity: 1;
                     }
                 }

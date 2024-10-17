@@ -8,7 +8,7 @@ const CookieConsentBanner = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCaptchaVisible, setCaptchaVisible] = useState(false);
   const [hasFinishedShowing, setHasFinishedShowing] = useState(false);
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
   const [forcedToAcceptAlert, showForcedToAcceptAlert] = useState(false);
 
   const [, setCanProceed] = useState(false); // Button state to check if user scrolled to the bottom
@@ -111,7 +111,7 @@ const CookieConsentBanner = () => {
                 </div>
                 <div className="flex justify-end gap-2 p-4 border-t dark:border-neutral-700">
                   <button
-                    onClick={() => setCurrentStep(0)} // Go back to previous step
+                    onClick={() => setCaptchaVisible(true)} // Go to captcha stepp
                     className="py-2 px-4 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-neutral-700 dark:hover:bg-neutral-600"
                     disabled={!hasFinishedShowing}
                   >
@@ -147,7 +147,7 @@ const CookieConsentBanner = () => {
                     className="py-2 px-4 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-neutral-700 dark:hover:bg-neutral-600"
                     disabled={!hasFinishedShowing}
                   >
-                    I dislike them
+                    Eww, they're disgusting
                   </button>
                   <button
                     onClick={() => setCaptchaVisible(true)} // Go to captcha step
